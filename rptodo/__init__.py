@@ -4,9 +4,6 @@
 __app_name__ = 'rptodo'
 __version__ = ' 0.1.0'
 
-from sre_constants import SUCCESS
-
-
 (
     SUCCESS,
     DIR_ERROR,
