@@ -2,11 +2,46 @@
 # rptodo/database.py
 
 import configparser
+import json
 from pathlib import Path
+from typing import Any, Dict, List, NamedTuple
 
-from rptodo import DB_WRITE_ERROR, SUCCESS
+from rptodo import DB_WRITE_ERROR, SUCCESS, DB_READ_ERROR, JSON_ERROR
 
 DEFAULT_DB_FILE_PATH = Path.home().joinpath(f".{Path.home().stem}_todo.json")
+
+
+class DBResponse(NamedTuple):
+  """Class that manage database response for read/write operations."""
+  todo_list: List[Dict[str, Any]]
+  error: int
+
+
+class DatabaseHandler:
+  """Class that manages database communication."""
+  def __init__(self, db_path: Path) -> None:
+      self._db_path = db_path
+
+  def read_todos(self) -> DBResponse:
+    """Retrieve stored to-do list"""
+    try:
+      with self._db_path.open('r') as db:
+        try:
+          return DBResponse(json.load(db), SUCCESS)
+        except json.JSONDecodeError:  # Catch wrong JSON format
+          return DBResponse([], JSON_ERROR)
+    except OSError:  # Catch file IO problems
+      return DBResponse([], DB_READ_ERROR)
+    
+    
+  def write_todos(self, todo_list: List[Dict[str, Any]]) -> DBResponse:
+    """Store new to-do list."""
+    try:
+      with self._db_path.open('w') as db:
+        json.dump(todo_list, db, indent = 4)
+      return DBResponse(todo_list, SUCCESS)
+    except OSError: # Catch file IO problems
+      return DBResponse([], DB_WRITE_ERROR)
 
 
 def get_database_path(config_file: Path) -> Path:
@@ -23,4 +58,3 @@ def init_database(db_path: Path) -> int:
       return SUCCESS
     except OSError:
       return DB_WRITE_ERROR
-
