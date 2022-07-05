@@ -34,3 +34,10 @@ Adds new todo to the database. Valid commands samples:
 
 `python -m rptodo add Wash the car`. Add task with priority 2
 
+
+### List
+
+List all to-do tasks stored in current database.
+
+`python -m rptodo list`
+
