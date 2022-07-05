@@ -7,7 +7,7 @@ from typing import Optional, List
 import typer
 
 from rptodo import (
-    __version__, __app_name__, ERRORS, config, database, rptodo
+    __version__, __app_name__, ERRORS, PRIORITY, config, database, rptodo
 )
 
 app = typer.Typer()
@@ -88,7 +88,8 @@ def get_todoer() -> rptodo.Todoer:
 
 @app.command()
 def add(
-    description: List[str] = typer.Argument(...), # ... Tells typer that argument is required
+    # ... Tells typer that argument is required
+    description: List[str] = typer.Argument(...),
     priority: int = typer.Option(2, '--priority', '-p', min=1, max=3)
 ) -> None:
     """Add a new to-do with a DESCRIPTION."""
@@ -97,7 +98,7 @@ def add(
     if error:
         typer.secho(
             f'Adding to-do failed with "{ERRORS[error]}"',
-            fg = typer.colors.RED
+            fg=typer.colors.RED
         )
         raise typer.Exit(1)
     else:
@@ -106,7 +107,6 @@ def add(
             f"""with priority: {priority}""",
             fg=typer.colors.GREEN,
         )
-        
 
 
 @app.command(name='list')
@@ -117,13 +117,13 @@ def list_all() -> None:
     if len(todo_list) == 0:
         typer.secho(
             'There are no task in the to-do list yet.',
-            fg = typer.colors.RED
+            fg=typer.colors.RED
         )
         raise typer.Exit()
     typer.secho(
         '\nto-do list:\n',
-        fg = typer.colors.BLUE,
-        bold = True
+        fg=typer.colors.BLUE,
+        bold=True
     )
     columns = (
         "ID.  ",
@@ -132,16 +132,15 @@ def list_all() -> None:
         "| Description  ",
     )
     headers = ''.join(columns)
-    typer.secho(headers, fg = typer.colors.BLUE, bold = True)
-    typer.secho('-' * len(headers), fg = typer.colors.BLUE)
+    typer.secho(headers, fg=typer.colors.BLUE, bold=True)
+    typer.secho('-' * len(headers), fg=typer.colors.BLUE)
     for id, todo in enumerate(todo_list, 1):
         desc, priority, done = todo.values()
         typer.secho(
             f"{id}{(len(columns[0]) - len(str(id))) * ' '}"
-            f"| ({priority}){(len(columns[1]) - len(str(priority)) - 4) * ' '}"
+            f"| {PRIORITY[priority]}{(len(columns[1]) - len(str(PRIORITY[priority])) - 2) * ' '}"
             f"| {done}{(len(columns[2]) - len(str(done)) - 2) * ' '}"
             f"| {desc}",
             fg=typer.colors.BLUE,
         )
-    typer.secho('-' * len(headers), fg = typer.colors.BLUE)
-        
+    typer.secho('-' * len(headers), fg=typer.colors.BLUE)
