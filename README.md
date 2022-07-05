@@ -23,3 +23,14 @@ In order to install required dependencies from `requirements.txt` file. Run the 
 ### Init
 
 Creates database file : `python -m rptodo init`. You can use the default location path or provide new one using --db-path or -db options, note that using this option you need to provide filename too.
+
+###  Add
+
+Adds new todo to the database. Valid commands samples:
+
+`python -m rptodo add Get some milk -p 1`
+
+`python -m rptodo add Clean the house --priority 3`
+
+`python -m rptodo add Wash the car`. Add task with priority 2
+
