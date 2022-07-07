@@ -51,3 +51,12 @@ Remove a to-do task by id.
 `python -m rptodo remove --force <id_todo>` -> Doesn't require user confirmation
 
 `python -m rptodo remove -f <id_todo>` -> Doesn't require user confirmation
+
+
+## Clear
+
+Remove all to-dos from database
+
+`python -m rptodo clear`
+
+`python -m rptodo clear --force`
