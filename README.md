@@ -41,3 +41,13 @@ List all to-do tasks stored in current database.
 
 `python -m rptodo list`
 
+
+### Remove
+
+Remove a to-do task by id.
+
+`python -m rptodo remove <id_todo>` -> Requires user confirmation
+
+`python -m rptodo remove --force <id_todo>` -> Doesn't require user confirmation
+
+`python -m rptodo remove -f <id_todo>` -> Doesn't require user confirmation
